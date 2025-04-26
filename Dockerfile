@@ -1,12 +1,13 @@
 # v0.7.7
 
 # Base node image
-FROM node:20-alpine AS node
+FROM node:20-slim AS node
 
-# Install jemalloc
-RUN apk add --no-cache jemalloc
-
-# Set environment variable to use jemalloc
+# Install Python3, venv, pip, build deps, and jemalloc
+RUN apt-get update && apt-get install -y python3 python3-venv python3-pip build-essential libssl-dev pkg-config libffi-dev libjemalloc2
+# Create Python venv for MCP servers and update PATH
+RUN python3 -m venv /venv
+ENV PATH="/venv/bin:$PATH"
 ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 
 # Add `uv` for extended MCP support
@@ -19,6 +20,7 @@ WORKDIR /app
 USER node
 
 COPY --chown=node:node . .
+COPY --chown=node:node --chmod=0755 entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN \
     # Allow mounting of these files, which have no default
@@ -39,7 +41,7 @@ RUN mkdir -p /app/client/public/images /app/api/logs
 # Node API setup
 EXPOSE 3080
 ENV HOST=0.0.0.0
-CMD ["npm", "run", "backend"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Optional: for client with nginx routing
 # FROM nginx:stable-alpine AS nginx-client
