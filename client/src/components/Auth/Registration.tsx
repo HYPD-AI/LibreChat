@@ -184,10 +184,10 @@ const Registration: React.FC = () => {
                 type="submit"
                 aria-label="Submit registration"
                 className="
-            w-full rounded-2xl bg-green-600 px-4 py-3 text-sm font-medium text-white
-            transition-colors hover:bg-green-700 focus:outline-none focus:ring-2
+            w-full rounded-2xl bg-[#1B1b1E] px-4 py-3 text-sm font-medium text-white
+            transition-colors hover:bg-[#2a2a2d] focus:outline-none focus:ring-2
             focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50
-            disabled:hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700
+            dark:bg-[#1B1b1E] dark:hover:bg-[#2a2a2d]
           "
               >
                 {isSubmitting ? <Spinner /> : localize('com_auth_continue')}
@@ -200,7 +200,7 @@ const Registration: React.FC = () => {
             <a
               href="/login"
               aria-label="Login"
-              className="inline-flex p-1 text-sm font-medium text-green-600 transition-colors hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
+              className="inline-flex p-1 text-sm font-medium text-[#71717A] dark:text-[#A1A1AA] transition-colors hover:text-[#8e8e95] dark:hover:text-[#D4D4D8]"
             >
               {localize('com_auth_login')}
             </a>
