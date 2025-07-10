@@ -1,0 +1,324 @@
+# For more information, see the Configuration Guide:
+# https://www.librechat.ai/docs/configuration/librechat_yaml
+
+# Configuration version (required)
+version: 1.2.1
+
+# Cache settings: Set to true to enable caching
+cache: true
+
+# File strategy s3/firebase
+# fileStrategy: "s3"
+
+# Custom interface configuration
+interface:
+  appTitle: "HYPD AI Marketing Automation Agent"
+  customWelcome: "Welcome to HYPD AI! Your AI Marketing Automation Agent"
+  # Privacy policy settings
+  privacyPolicy:
+    externalUrl: 'https://hypd.ai/privacy'
+    openNewTab: true
+
+  # Terms of service
+  termsOfService:
+    externalUrl: 'https://hypd.ai/terms'
+    openNewTab: true
+    modalAcceptance: true
+    modalTitle: "Terms of Service HYPD.ai"
+    modalContent: |
+      # Terms and Conditions
+
+      ## 1. Introduction
+      These terms and conditions (“Terms”) govern your access to and use of **HYPD**, a software-as-a-service platform (the “Service”) provided by **HYPD Advertising Intelligence GmbH** (“we,” “us,” or “our”). By using our website or services, you agree to be bound by these Terms.
+
+      ## 2. Use of Service
+      We grant you a **limited, non-exclusive, non-transferable, revocable** license to use the Service for your internal business purposes. Misuse of the Service—including unauthorized access or interference with others’ use—is prohibited.
+
+      ## 3. User Responsibilities
+      You are solely responsible for the data, content, and information you upload or process via the Service. You represent that you have all necessary rights and that your use complies with all applicable laws and regulations.
+
+      ## 4. Subscription and Payments
+      - **Subscription:** HYPD is available via monthly or annual subscription billing cycles.  
+      - **Payments:** All payments are processed securely by Stripe. By subscribing, you authorize us to charge your selected payment method at the beginning of each billing cycle.  
+      - **No Refunds:** Payments are non-refundable. You will retain access until the end of the billing cycle even after cancellation.  
+      - **Cancellation:** You may cancel anytime before your next billing cycle to avoid future charges.  
+      - **Changes:** We reserve the right to modify pricing and plans at any time.
+
+      ## 5. Marketing Emails
+      By signing up, you agree to receive marketing emails from us unless you opt out. You may unsubscribe via the link in any email. We may still send transactional or service-related messages.
+
+      ## 6. Confidentiality
+      Each party agrees to protect the other’s confidential information and use it only as needed to fulfill obligations under these Terms, except where disclosure is required by law.
+
+      ## 7. Termination
+      Either party may terminate these Terms if the other party materially breaches and fails to cure the breach within 30 days. Upon termination, you must cease use of the Service and delete any copies.
+
+      ## 8. User Data
+      While we perform routine backups, you are responsible for maintaining your data. We are not liable for loss or corruption of your data.
+
+      ## 9. Disclaimer of Warranties
+      The Service is provided **“as is”** without warranties of any kind. Availability, accuracy, and fitness for purpose are not guaranteed.
+
+      ## 10. Third-Party Content
+      We may link to or display third-party content. We are not responsible for their content, accuracy, or practices. You access third-party websites at your own risk.
+
+      ## 11. Contact
+      If you have any questions about these Terms or the Service, please contact us at **contact@hypd.ai**.
+
+  endpointsMenu: true
+  modelSelect: true
+  parameters: true
+  sidePanel: true
+  presets: false
+  prompts: true
+  bookmarks: true
+  multiConvo: false
+  agents: true
+
+# Example Registration Object Structure (optional)
+registration:
+  socialLogins: ['github', 'google', 'discord', 'openid', 'facebook', 'apple']
+  # allowedDomains:
+  # - "gmail.com"
+
+
+# Example Balance settings
+# balance:
+#   enabled: false
+#   startBalance: 20000
+#   autoRefillEnabled: false
+#   refillIntervalValue: 30
+#   refillIntervalUnit: 'days'
+#   refillAmount: 10000
+
+# speech:
+#   tts:
+#     openai:
+#       url: ''
+#       apiKey: '${TTS_API_KEY}'
+#       model: ''
+#       voices: ['']
+
+#
+#   stt:
+#     openai:
+#       url: ''
+#       apiKey: '${STT_API_KEY}'
+#       model: ''
+
+# rateLimits:
+#   fileUploads:
+#     ipMax: 100
+#     ipWindowInMinutes: 60  # Rate limit window for file uploads per IP
+#     userMax: 50
+#     userWindowInMinutes: 60  # Rate limit window for file uploads per user
+#   conversationsImport:
+#     ipMax: 100
+#     ipWindowInMinutes: 60  # Rate limit window for conversation imports per IP
+#     userMax: 50
+#     userWindowInMinutes: 60  # Rate limit window for conversation imports per user
+
+# Example Actions Object Structure
+actions:
+  allowedDomains:
+    - "swapi.dev"
+    - "librechat.ai"
+    - "google.com"
+
+# Example MCP Servers Object Structure
+mcpServers:
+   everything:
+     type: sse # type can optionally be omitted
+     url: http://localhost:3001/sse
+     timeout: 60000  # 1 minute timeout for this server, this is the default timeout for MCP servers.
+   puppeteer:
+     type: stdio
+     command: npx
+     args:
+       - -y
+       - "@modelcontextprotocol/server-puppeteer"
+     timeout: 300000  # 5 minutes timeout for this server
+   filesystem:
+    type: stdio
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-filesystem"
+      - "/app"    # the container’s code root you mounted
+    iconPath: /app/client/public/assets/logo.svg
+    timeout: 300000
+   fb-ads-mcp-server:
+    type: stdio
+    command: /venv/bin/python
+    args:
+      - /app/facebook-ads-mcp-server/server.py
+      - --fb-token
+      - EAAXCExtRKOIBO03dIbXkijRY06uLtawtA4ybwrvGwcZCDVZBrG1swOCuccG08P2ZCifnOh3Qe27b4CLshMehJmmaHn3XIuZAw2rVchgpFQRnoHCZCqL2Y0ZBH3HR03wTSsRYvQHquQZC6fNDs5I6i0iEH1vMaQUdtOyapQNZC446ZA8pzkiVPKxcwTR8yUOYZD
+    iconPath: "https://pngimg.com/d/meta_PNG12.png"
+    stderr: inherit
+    initTimeout: 10000
+    timeout: 30000
+   gaql:
+    type: stdio
+    command: node
+    args:
+      - /app/gaql-mcp-server/dist/index.js
+      - https://google-ads-proxy-996135871481.us-central1.run.app/api/google-ads/query-sandbox
+      - u4gvj56magqiq24pm3jxqzl1zgesmry3
+    iconPath: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Google_Ads_logo.svg/960px-Google_Ads_logo.svg.png"
+    timeout: 300000
+   mcp-clickhouse:
+     type: sse
+     url: http://host.docker.internal:8001/sse
+     iconPath: "https://upload.wikimedia.org/wikipedia/commons/0/0e/Clickhouse.png"
+     timeout: 300000
+#   mcp-obsidian:
+#     command: npx
+#     args:
+#       - -y
+#       - "mcp-obsidian"
+#       - /path/to/obsidian/vault
+
+# Definition of custom endpoints
+endpoints:
+  # assistants:
+  #   disableBuilder: false # Disable Assistants Builder Interface by setting to `true`
+  #   pollIntervalMs: 3000  # Polling interval for checking assistant updates
+  #   timeoutMs: 180000  # Timeout for assistant operations
+  #   # Should only be one or the other, either `supportedIds` or `excludedIds`
+  #   supportedIds: ["asst_supportedAssistantId1", "asst_supportedAssistantId2"]
+  #   # excludedIds: ["asst_excludedAssistantId"]
+  #   # Only show assistants that the user created or that were created externally (e.g. in Assistants playground).
+  #   # privateAssistants: false # Does not work with `supportedIds` or `excludedIds`
+  #   # (optional) Models that support retrieval, will default to latest known OpenAI models that support the feature
+  #   retrievalModels: ["gpt-4-turbo-preview"]
+  #   # (optional) Assistant Capabilities available to all users. Omit the ones you wish to exclude. Defaults to list below.
+  #   capabilities: ["code_interpreter", "retrieval", "actions", "tools", "image_vision"]
+  agents:
+    allowedProviders:
+      - openAI
+      - google
+      - anthropic
+  #   # (optional) Default recursion depth for agents, defaults to 25
+  #   recursionLimit: 50
+  #   # (optional) Max recursion depth for agents, defaults to 25
+  #   maxRecursionLimit: 100
+  #   # (optional) Disable the builder interface for agents
+  #   disableBuilder: false
+  #   # (optional) Agent Capabilities available to all users. Omit the ones you wish to exclude. Defaults to list below.
+  #   capabilities: ["execute_code", "file_search", "actions", "tools"]  
+  custom: []
+  # Groq Example
+  #  - name: 'groq'
+  #    apiKey: '${GROQ_API_KEY}'
+  #    baseURL: 'https://api.groq.com/openai/v1/'
+  #    models:
+  #      default:
+  #        [
+  #          'llama3-70b-8192',
+  #          'llama3-8b-8192',
+  #          'llama2-70b-4096',
+  #          'mixtral-8x7b-32768',
+  #          'gemma-7b-it',
+  #        ]
+  #      fetch: false
+  #    titleConvo: true
+  #    titleModel: 'mixtral-8x7b-32768'
+  #    modelDisplayLabel: 'groq'
+
+  # Mistral AI Example
+  #  - name: 'Mistral' # Unique name for the endpoint
+  #    # For `apiKey` and `baseURL`, you can use environment variables that you define.
+  #    # recommended environment variables:
+  #    apiKey: '${MISTRAL_API_KEY}'
+  #    baseURL: 'https://api.mistral.ai/v1'
+
+  #   models:
+  #      # List of default models to use. At least one value is required.
+  #      default: ['mistral-tiny', 'mistral-small', 'mistral-medium']
+  #      # Fetch option: Set to true to fetch models from API.
+  #      fetch: true # Defaults to false.
+
+  #    # Optional configurations
+
+  #    # Title Conversation setting
+  #    titleConvo: true # Set to true to enable title conversation
+
+  #    # Title Method: Choose between "completion" or "functions".
+  #    # titleMethod: "completion"  # Defaults to "completion" if omitted.
+
+  #    # Title Model: Specify the model to use for titles.
+  #    titleModel: 'mistral-tiny' # Defaults to "gpt-3.5-turbo" if omitted.
+
+  #    # Summarize setting: Set to true to enable summarization.
+  #    # summarize: false
+
+  #    # Summary Model: Specify the model to use if summarization is enabled.
+  #    # summaryModel: "mistral-tiny"  # Defaults to "gpt-3.5-turbo" if omitted.
+
+  #    # Force Prompt setting: If true, sends a `prompt` parameter instead of `messages`.
+  #    # forcePrompt: false
+
+  #    # The label displayed for the AI model in messages.
+  #    modelDisplayLabel: 'Mistral' # Default is "AI" when not set.
+
+  #    # Add additional parameters to the request. Default params will be overwritten.
+  #    # addParams:
+  #    # safe_prompt: true # This field is specific to Mistral AI: https://docs.mistral.ai/api/
+
+  #    # Drop Default params parameters from the request. See default params in guide linked below.
+  #    # NOTE: For Mistral, it is necessary to drop the following parameters or you will encounter a 422 Error:
+  #    dropParams: ['stop', 'user', 'frequency_penalty', 'presence_penalty']
+
+  #  # OpenRouter Example
+  #  - name: 'OpenRouter'
+  #    # For `apiKey` and `baseURL`, you can use environment variables that you define.
+  #    # recommended environment variables:
+  #    apiKey: '${OPENROUTER_KEY}'
+  #    baseURL: 'https://openrouter.ai/api/v1'
+  #    models:
+  #      default: ['meta-llama/llama-3-70b-instruct']
+  #      fetch: true
+  #    titleConvo: true
+  #    titleModel: 'meta-llama/llama-3-70b-instruct'
+  #    # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
+  #    dropParams: ['stop']
+  #    modelDisplayLabel: 'OpenRouter'
+
+  #  # Portkey AI Example
+  #  - name: "Portkey"
+  #    apiKey: "dummy"
+  #    baseURL: 'https://api.portkey.ai/v1'
+  #    headers:
+  #        x-portkey-api-key: '${PORTKEY_API_KEY}'
+  #        x-portkey-virtual-key: '${PORTKEY_OPENAI_VIRTUAL_KEY}'
+  #    models:
+  #        default: ['gpt-4o-mini', 'gpt-4o', 'chatgpt-4o-latest']
+  #        fetch: true
+  #    titleConvo: true
+  #    titleModel: 'current_model'
+  #    summarize: false
+  #    summaryModel: 'current_model'
+  #    forcePrompt: false
+  #    modelDisplayLabel: 'Portkey'
+  #    iconURL: https://images.crunchbase.com/image/upload/c_pad,f_auto,q_auto:eco,dpr_1/rjqy7ghvjoiu4cd1xjbf
+# fileConfig:
+#   endpoints:
+#     assistants:
+#       fileLimit: 5
+#       fileSizeLimit: 10  # Maximum size for an individual file in MB
+#       totalSizeLimit: 50  # Maximum total size for all files in a single request in MB
+#       supportedMimeTypes:
+#         - "image/.*"
+#         - "application/pdf"
+#     openAI:
+#       disabled: true  # Disables file uploading to the OpenAI endpoint
+#     default:
+#       totalSizeLimit: 20
+#     YourCustomEndpointName:
+#       fileLimit: 2
+#       fileSizeLimit: 5
+#   serverFileSizeLimit: 100  # Global server file size limit in MB
+#   avatarSizeLimit: 2  # Limit for user avatar image size in MB
+# # See the Custom Configuration Guide for more information on Assistants Config:
+# # https://www.librechat.ai/docs/configuration/librechat_yaml/object_structure/assistants_endpoint

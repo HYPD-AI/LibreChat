@@ -3,13 +3,15 @@
 
 services:
   api:
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: LibreChat
     ports:
       - "${PORT}:${PORT}"
     depends_on:
       - mongodb
       - rag_api
-    image: ghcr.io/danny-avila/librechat-dev:latest
     restart: always
     user: "${UID}:${GID}"
     extra_hosts:
@@ -22,11 +24,29 @@ services:
       - RAG_API_URL=http://rag_api:${RAG_PORT:-8000}
     volumes:
       - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+        read_only: true
+      - type: bind
         source: ./.env
         target: /app/.env
-      - ./images:/app/client/public/images
-      - ./uploads:/app/uploads
-      - ./logs:/app/api/logs
+      - type: bind
+        source: ./images
+        target: /app/client/public/images
+      - type: bind
+        source: /Users/ionutciobotaru/Documents/GitHub/facebook-ads-mcp-server
+        target: /app/facebook-ads-mcp-server
+      - type: bind
+        source: /Users/ionutciobotaru/Documents/GitHub/gaql-mcp-server
+        target: /app/gaql-mcp-server
+        read_only: true
+
+      - type: bind
+        source: ./uploads
+        target: /app/uploads
+      - type: bind
+        source: ./logs
+        target: /app/api/logs
   mongodb:
     container_name: chat-mongodb
     image: mongo
